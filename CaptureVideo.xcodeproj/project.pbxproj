@@ -16,6 +16,7 @@
 		1E8B88752466CCAE0092B22D /* CaptureVideoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8B88742466CCAE0092B22D /* CaptureVideoUITests.swift */; };
 		1E8B88872466D3110092B22D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8B88862466D3110092B22D /* ViewController.swift */; };
 		1E8B888B2466DC570092B22D /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8B888A2466DC570092B22D /* CameraController.swift */; };
+		1E8B888D2466E2790092B22D /* StreamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8B888C2466E2790092B22D /* StreamController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		1E8B88762466CCAE0092B22D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E8B88862466D3110092B22D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1E8B888A2466DC570092B22D /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		1E8B888C2466E2790092B22D /* StreamController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				1E8B88582466CCAC0092B22D /* Main.storyboard */,
 				1E8B88862466D3110092B22D /* ViewController.swift */,
 				1E8B888A2466DC570092B22D /* CameraController.swift */,
+				1E8B888C2466E2790092B22D /* StreamController.swift */,
 				1E8B885B2466CCAE0092B22D /* Assets.xcassets */,
 				1E8B885D2466CCAE0092B22D /* LaunchScreen.storyboard */,
 				1E8B88602466CCAE0092B22D /* Info.plist */,
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E8B888D2466E2790092B22D /* StreamController.swift in Sources */,
 				1E8B88532466CCAC0092B22D /* AppDelegate.swift in Sources */,
 				1E8B88872466D3110092B22D /* ViewController.swift in Sources */,
 				1E8B88552466CCAC0092B22D /* SceneDelegate.swift in Sources */,

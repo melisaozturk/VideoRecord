@@ -23,31 +23,12 @@ class ViewController: UIViewController {
     //Allows the user to put the camera in video mode.
 //    @IBOutlet fileprivate var videoModeButton: UIButton!
     
-    let cameraController = CameraController()
+    let streamController = StreamController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //     prepares our camera controller like we designed it to
-        func configureCameraController() {
-            cameraController.prepare {(error) in
-                if let error = error {
-                    print(error)
-                }
-                
-                try? self.cameraController.displayPreview(on: self.capturePreviewView)
-            }
-        }
-        
-        func styleCaptureButton() {
-            captureButton.layer.borderColor = UIColor.black.cgColor
-            captureButton.layer.borderWidth = 2
-            
-            captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
-        }
-        
         styleCaptureButton()
-        configureCameraController()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -55,20 +36,20 @@ class ViewController: UIViewController {
     }
     
     @IBAction func toggleFlash(_ sender: UIButton) {
-        if cameraController.flashMode == .on {
-            cameraController.flashMode = .off
-//            toggleFlashButton.setImage(#imageLiteral(resourceName: "Flash Off Icon"), for: .normal)
-        }
-     
-        else {
-            cameraController.flashMode = .on
-//            toggleFlashButton.setImage(#imageLiteral(resourceName: "Flash On Icon"), for: .normal)
-        }
+//        if streamController.flashMode == .on {
+//            streamController.flashMode = .off
+////            toggleFlashButton.setImage(#imageLiteral(resourceName: "Flash Off Icon"), for: .normal)
+//        }
+//
+//        else {
+//            streamController.flashMode = .on
+////            toggleFlashButton.setImage(#imageLiteral(resourceName: "Flash On Icon"), for: .normal)
+//        }
     }
     
     @IBAction func switchCameras(_ sender: UIButton) {
         do {
-            try cameraController.switchCameras()
+            try streamController.switchCameras()
         }
      
         catch {
@@ -88,15 +69,41 @@ class ViewController: UIViewController {
     }
     
     @IBAction func captureImage(_ sender: UIButton) {
-        cameraController.captureImage {(image, error) in
-            guard let image = image else {
-                print(error ?? "Image capture error")
-                return
-            }
-            
-            try? PHPhotoLibrary.shared().performChangesAndWait {
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
-            }
-        }
+//        TODO: StartRecording
+//        cameraController.captureImage {(image, error) in
+//            guard let image = image else {
+//                print(error ?? "Image capture error")
+//                return
+//            }
+//
+//            try? PHPhotoLibrary.shared().performChangesAndWait {
+//                PHAssetChangeRequest.creationRequestForAsset(from: image)
+//            }
+//        }
+        configureCameraController()
+
     }
+    
+    
+    @IBAction func btnStop(_ sender: Any) {
+        streamController.stopRecording()
+    }
+    //     prepares our camera controller like we designed it to
+           func configureCameraController() {
+               streamController.prepare {(error) in
+                   if let error = error {
+                       print(error)
+                   }
+                   
+                   try? self.streamController.displayPreview(on: self.capturePreviewView)
+               }
+           }
+           
+           func styleCaptureButton() {
+               captureButton.layer.borderColor = UIColor.black.cgColor
+               captureButton.layer.borderWidth = 2
+               
+               captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
+           }
+    
 }
