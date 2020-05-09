@@ -34,7 +34,6 @@ class AssetWriterController: NSObject {
     private var videoOutput: AVCaptureVideoDataOutput = AVCaptureVideoDataOutput()
     private var audioOutput: AVCaptureAudioDataOutput = AVCaptureAudioDataOutput()
     
-//    private var videoDevice: AVCaptureDevice? //= AVCaptureInput(displayID: 69731840) //AVCaptureDevice.default(for: AVMediaType.video)!
     private var audioConnection: AVCaptureConnection?
     private var videoConnection: AVCaptureConnection?
     
@@ -47,74 +46,114 @@ class AssetWriterController: NSObject {
     
     private var isCameraRecording: Bool = false
     private var isRecordingSessionStarted: Bool = false
-        
+    
     private var recordingQueue = DispatchQueue(label: "recording.queue")
     
+    var currentCameraPosition: CameraPosition?
+    var frontCameraInput: AVCaptureDeviceInput?
+    var rearCameraInput: AVCaptureDeviceInput?
+    
+    var frontCamera: AVCaptureDevice? //to represent the actual iOS device’s cameras
+    var rearCamera: AVCaptureDevice?
 }
 
 
 
 extension AssetWriterController {
     
-    
-    func setup() {
-        self.session.sessionPreset = AVCaptureSession.Preset.high
+    func prepare(completionHandler: @escaping (Error?) -> Void) {
         
-        self.recordingURL = URL(fileURLWithPath: "\(NSTemporaryDirectory() as String)/file.mp4")
-        if self.fileManager.isDeletableFile(atPath: self.recordingURL!.path) {
-            _ = try? self.fileManager.removeItem(atPath: self.recordingURL!.path)
+        func createCaptureSession() {
+            self.session = AVCaptureSession()
         }
         
-        self.assetWriter = try? AVAssetWriter(outputURL: self.recordingURL!,
-                                              fileType: AVFileType.mp4)
-        self.assetWriter!.movieFragmentInterval = CMTime.invalid
-        self.assetWriter!.shouldOptimizeForNetworkUse = true
-        
-        let audioSettings = [
-            AVFormatIDKey : kAudioFormatMPEG4AAC,
-            AVNumberOfChannelsKey : 2,
-            AVSampleRateKey : 44100.0,
-            AVEncoderBitRateKey: 192000
-            ] as [String : Any]
-        
-        let videoSettings = [
-            AVVideoCodecKey : AVVideoCodecType.h264,
-            AVVideoWidthKey : 1920,
-            AVVideoHeightKey : 1080
-            /*AVVideoCompressionPropertiesKey: [
-             AVVideoAverageBitRateKey:  NSNumber(value: 5000000)
-             ]*/
-            ] as [String : Any]
-        
-        self.videoInput = AVAssetWriterInput(mediaType: AVMediaType.video,
-                                             outputSettings: videoSettings)
-        self.audioInput = AVAssetWriterInput(mediaType: AVMediaType.audio,
-                                             outputSettings: audioSettings)
-        
-        self.videoInput?.expectsMediaDataInRealTime = true
-        self.audioInput?.expectsMediaDataInRealTime = true
-        
-        if self.assetWriter!.canAdd(self.videoInput!) {
-            self.assetWriter?.add(self.videoInput!)
+        func configureCaptureDevices() throws {
+            let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .unspecified)
+            guard case let cameras = (session.devices.compactMap { $0 }), !cameras.isEmpty else { throw CameraControllerError.noCamerasAvailable }
+            
+            for camera in cameras {
+                if camera.position == .front {
+                    self.frontCamera = camera
+                }
+                
+                if camera.position == .back {
+                    self.rearCamera = camera
+                    
+                    try camera.lockForConfiguration()
+                    camera.focusMode = .continuousAutoFocus
+                    camera.unlockForConfiguration()
+                }
+            }
+        }
+        func configureDeviceInputs() throws {
+            
+            if let rearCamera = self.rearCamera {
+                self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
+                
+                if session.canAddInput(self.rearCameraInput!) { session.addInput(self.rearCameraInput!) }
+                
+                self.currentCameraPosition = .rear
+            }
+                
+            else if let frontCamera = self.frontCamera {
+                self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
+                
+                if session.canAddInput(self.frontCameraInput!) { session.addInput(self.frontCameraInput!) }
+                else { throw CameraControllerError.inputsAreInvalid }
+                
+                self.currentCameraPosition = .front
+            }
+                
+            else { throw CameraControllerError.noCamerasAvailable }
         }
         
-        if self.assetWriter!.canAdd(self.audioInput!) {
-            self.assetWriter?.add(self.audioInput!)
-        }
-        
-//        self.deviceInput = try? AVCaptureDeviceInput(device: self.videoDevice!)
-//        self.deviceInput = AVCaptureInput(displayID: 724042646)
-//        self.deviceInput!.minFrameDuration = CMTimeMake(1, Int32(30))
-//        self.deviceInput!.capturesCursor = true
-//        self.deviceInput!.capturesMouseClicks = true
-        
-//        if self.session.canAddInput(self.deviceInput!) {
-//            self.session.addInput(self.deviceInput!)
-//        }
-        
-        self.session.startRunning()
-        
-        DispatchQueue.main.async {
+        func configureVideoOutput() throws {
+            self.session.sessionPreset = AVCaptureSession.Preset.high
+            
+            self.recordingURL = URL(fileURLWithPath: "\(NSTemporaryDirectory() as String)/file.mp4")
+            if self.fileManager.isDeletableFile(atPath: self.recordingURL!.path) {
+                _ = try? self.fileManager.removeItem(atPath: self.recordingURL!.path)
+            }
+            
+            self.assetWriter = try? AVAssetWriter(outputURL: self.recordingURL!,
+                                                  fileType: AVFileType.mp4)
+            self.assetWriter!.movieFragmentInterval = CMTime.invalid
+            self.assetWriter!.shouldOptimizeForNetworkUse = true
+            
+            let audioSettings = [
+                AVFormatIDKey : kAudioFormatMPEG4AAC,
+                AVNumberOfChannelsKey : 2,
+                AVSampleRateKey : 44100.0,
+                AVEncoderBitRateKey: 192000
+                ] as [String : Any]
+            
+            let videoSettings = [
+                AVVideoCodecKey : AVVideoCodecType.h264,
+                AVVideoWidthKey : 1920,
+                AVVideoHeightKey : 1080
+                /*AVVideoCompressionPropertiesKey: [
+                 AVVideoAverageBitRateKey:  NSNumber(value: 5000000)
+                 ]*/
+                ] as [String : Any]
+            
+            self.videoInput = AVAssetWriterInput(mediaType: AVMediaType.video,
+                                                 outputSettings: videoSettings)
+            self.audioInput = AVAssetWriterInput(mediaType: AVMediaType.audio,
+                                                 outputSettings: audioSettings)
+            
+            self.videoInput?.expectsMediaDataInRealTime = true
+            self.audioInput?.expectsMediaDataInRealTime = true
+            
+            if self.assetWriter!.canAdd(self.videoInput!) {
+                self.assetWriter?.add(self.videoInput!)
+            }
+            
+            if self.assetWriter!.canAdd(self.audioInput!) {
+                self.assetWriter?.add(self.audioInput!)
+            }
+            
+            self.session.startRunning()
+            
             self.session.beginConfiguration()
             
             if self.session.canAddOutput(self.videoOutput) {
@@ -140,6 +179,26 @@ extension AssetWriterController {
             
             self.audioConnection = self.audioOutput.connection(with: AVMediaType.audio)
         }
+        DispatchQueue.main.async {
+            do {
+                createCaptureSession()
+                try configureCaptureDevices()
+                try configureDeviceInputs()
+                try configureVideoOutput()
+            }
+                
+            catch {
+                DispatchQueue.main.async {
+                    completionHandler(error)
+                }
+                
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler(nil)
+            }
+        }
     }
     
     func displayPreview(on view: UIView) {
@@ -150,23 +209,19 @@ extension AssetWriterController {
         self.previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer!.connection?.videoOrientation = .portrait
         
-        view.layer.insertSublayer(self.previewLayer!, at: 0)
-        self.previewLayer!.frame = view.frame
+        //        view.layer.insertSublayer(self.previewLayer!, at: 0)
+        //                        self.previewLayer!.frame = view.frame
         
-        self.previewLayer = AVCaptureVideoPreviewLayer(session: self.session)
-        
-        //importent line of code what will did a trick
-        self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        
-//        let rootLayer = view.layer
-//        rootLayer.masksToBounds = true
-//        self.previewLayer?.frame = CGRect(x: 0, y: 0, width: 1920, height: 1080)
-        
-//        rootLayer.insertSublayer(self.previewLayer!, at: 0)
+        let rootLayer = view.layer
+        rootLayer.masksToBounds = true
+        rootLayer.insertSublayer(self.previewLayer!, at: 0)
+        self.previewLayer?.frame = CGRect(x: 0, y: 0, width: 1920, height: 1080)
+
     }
     
     
     func startRecording(view: UIView) {
+        
         if self.assetWriter?.startWriting() != true {
             print("error: \(self.assetWriter?.error.debugDescription ?? "")")
         }
@@ -185,7 +240,7 @@ extension AssetWriterController {
             try? PHPhotoLibrary.shared().performChangesAndWait {
                 PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.recordingURL!)
             }
-//            exit(0)
+            //            exit(0)
         }
     }
     func captureOutput(_ captureOutput: AVCaptureOutput, didOutput
@@ -208,10 +263,64 @@ extension AssetWriterController {
             if self.videoInput!.isReadyForMoreMediaData {
                 //print("appendSampleBuffer video");
                 if !self.videoInput!.append(sampleBuffer) {
-                    print("Error writing video buffer");
+                    print("Error writing video buffer")
                 }
             }
         }
+    }
+    
+    func switchCameras() throws {
+        //5
+        guard let currentCameraPosition = currentCameraPosition, session.isRunning else { throw CameraControllerError.captureSessionIsMissing }
+        
+        //6
+        session.beginConfiguration()
+        
+        func switchToFrontCamera() throws {
+            guard case let inputs = session.inputs, let rearCameraInput = self.rearCameraInput, inputs.contains(rearCameraInput),
+                let frontCamera = self.frontCamera else { throw CameraControllerError.invalidOperation }
+            
+            self.frontCameraInput = try AVCaptureDeviceInput(device: frontCamera)
+            
+            session.removeInput(rearCameraInput)
+            
+            if session.canAddInput(self.frontCameraInput!) {
+                session.addInput(self.frontCameraInput!)
+                
+                self.currentCameraPosition = .front
+            }
+                
+            else { throw CameraControllerError.invalidOperation }
+        }
+        func switchToRearCamera() throws {
+            
+            guard case let inputs = session.inputs, let frontCameraInput = self.frontCameraInput, inputs.contains(frontCameraInput),
+                let rearCamera = self.rearCamera else { throw CameraControllerError.invalidOperation }
+            
+            self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
+            
+            session.removeInput(frontCameraInput)
+            
+            if session.canAddInput(self.rearCameraInput!) {
+                session.addInput(self.rearCameraInput!)
+                
+                self.currentCameraPosition = .rear
+            }
+                
+            else { throw CameraControllerError.invalidOperation }
+        }
+        
+        //7
+        switch currentCameraPosition {
+        case .front:
+            try switchToRearCamera()
+            
+        case .rear:
+            try switchToFrontCamera()
+        }
+        
+        //8:  commits, or saves, our capture session after configuring it.
+        session.commitConfiguration()
     }
 }
 
