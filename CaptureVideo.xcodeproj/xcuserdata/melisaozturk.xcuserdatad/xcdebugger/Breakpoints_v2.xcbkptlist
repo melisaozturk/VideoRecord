@@ -30,8 +30,8 @@
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "displayPreview(on:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "configureVideoOutput()"
             landmarkType = "9">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "switchToRearCamera()"
             landmarkType = "9">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "switchCameras()"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,58 +94,10 @@
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "stopRecording()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3B8228E0-B8C6-49A5-B88D-2A4E6CEF0192"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CaptureVideo/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "captureImage(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "3B8228E0-B8C6-49A5-B88D-2A4E6CEF0192 - dae518e45faf8a1b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CaptureVideo.ViewController.captureImage(__C.UIButton) -&gt; ()"
-                  moduleName = "CaptureVideo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/melisaozturk/Documents/CaptureVideo/CaptureVideo/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "45"
-                  endingLineNumber = "45"
-                  offsetFromSymbolStart = "116">
-               </Location>
-               <Location
-                  uuid = "3B8228E0-B8C6-49A5-B88D-2A4E6CEF0192 - 692b66b4a2f3e734"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.URL&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in CaptureVideo.ViewController.captureImage(__C.UIButton) -&gt; ()"
-                  moduleName = "CaptureVideo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/melisaozturk/Documents/CaptureVideo/CaptureVideo/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "46"
-                  endingLineNumber = "46"
-                  offsetFromSymbolStart = "180">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -158,8 +110,8 @@
             filePath = "CaptureVideo/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "configureCameraController()"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,8 +126,8 @@
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "StreamController"
             landmarkType = "21">
          </BreakpointContent>
@@ -183,17 +135,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2B5A4F2D-F30F-4DF9-8BDA-9CE66EF69C95"
+            uuid = "EDDD73F7-0F9E-474E-BBA8-81DF0A82B9C3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CaptureVideo/StreamController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "captureOutput(_:didOutput:from:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EDDD73F7-0F9E-474E-BBA8-81DF0A82B9C3 - 29c6bee1e3f1f97b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CaptureVideo.StreamController.captureOutput(_: __C.AVCaptureOutput, didOutput: __C.CMSampleBufferRef, from: __C.AVCaptureConnection) -&gt; ()"
+                  moduleName = "CaptureVideo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/melisaozturk/Documents/CaptureVideo/CaptureVideo/StreamController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "220"
+                  endingLineNumber = "220"
+                  offsetFromSymbolStart = "580">
+               </Location>
+               <Location
+                  uuid = "EDDD73F7-0F9E-474E-BBA8-81DF0A82B9C3 - ae51c4f9c8184359"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in CaptureVideo.StreamController.captureOutput(_: __C.AVCaptureOutput, didOutput: __C.CMSampleBufferRef, from: __C.AVCaptureConnection) -&gt; ()"
+                  moduleName = "CaptureVideo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/melisaozturk/Documents/CaptureVideo/CaptureVideo/StreamController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "221"
+                  endingLineNumber = "221"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

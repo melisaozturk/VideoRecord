@@ -42,18 +42,15 @@ class ViewController: UIViewController {
     
     @IBAction func captureImage(_ sender: UIButton) {
 //        TODO: StartRecording
-//        streamController.captureVideo {(output, error) in
-//            guard let output = output else {
-//                print(error ?? "Video capture error")
-//                return
-//            }
+        streamController.captureVideo {(output, error) in
+            guard let output = output else {
+                print(error ?? "Video capture error")
+                return
+            }
 //            #if DEBUG
 //            print("RECORDING ..")
-//            #endif
-//            try? PHPhotoLibrary.shared().performChangesAndWait {
-//                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: output as CGPath)
-//            }
-//        }
+//            #endif            
+        }
         configureCameraController()
 
     }

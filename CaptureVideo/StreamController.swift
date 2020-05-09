@@ -8,6 +8,7 @@
 
 import AVFoundation
 import UIKit
+import Photos
 
 class StreamController: NSObject {
     
@@ -36,7 +37,7 @@ class StreamController: NSObject {
     var movieOutput = AVCaptureVideoDataOutput()
     var previewLayer = AVCaptureVideoPreviewLayer()
     
-    var videoCaptureCompletionBlock: ((String?, Error?) -> Void)?
+    var videoCaptureCompletionBlock: ((UIImage?, Error?) -> Void)?
 
 //    var didOutputNewImage: ((UIImage) -> Void)?
     
@@ -198,7 +199,7 @@ extension StreamController {
         self.captureSession?.stopRunning()
     }
     
-    func captureVideo(completion: @escaping (String?, Error?) -> Void) {
+    func captureVideo(completion: @escaping (UIImage?, Error?) -> Void) {
        guard let captureSession = captureSession, captureSession.isRunning else { completion(nil, CameraControllerError.captureSessionIsMissing); return }
         
         self.videoCaptureCompletionBlock = completion
@@ -213,13 +214,18 @@ extension StreamController: AVCaptureVideoDataOutputSampleBufferDelegate {
 
         let context = CIContext()
         guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return  }
-//        captureSession?
-//        self.videoCaptureCompletionBlock!(output.accessibilityPath?.cgPath as? String,nil)
-//        UISaveVideoAtPathToSavedPhotosAlbum(output.connection(with: .video), nil, nil, nil)
-//        let image = UIImage(cgImage: cgImage)
 
+        let image = UIImage(cgImage: cgImage)
+
+        try? PHPhotoLibrary.shared().performChangesAndWait {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }
+        
         // the final picture is here, we call the completion block
 //        self.didOutputNewImage!(image)
+
+        //        self.videoCaptureCompletionBlock!(output.accessibilityPath?.cgPath as? String,nil)
+        //        UISaveVideoAtPathToSavedPhotosAlbum(output.connection(with: .video), nil, nil, nil)
       }
 
     
