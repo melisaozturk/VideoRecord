@@ -217,7 +217,7 @@ extension StreamController: AVCaptureVideoDataOutputSampleBufferDelegate {
 
         let image = UIImage(cgImage: cgImage)
 
-        try? PHPhotoLibrary.shared().performChangesAndWait {
+        try? PHPhotoLibrary.shared() .performChangesAndWait {
             PHAssetChangeRequest.creationRequestForAsset(from: image)
         }
         
