@@ -33,11 +33,13 @@ class StreamController: NSObject {
     var frontCameraInput: AVCaptureDeviceInput?
     var rearCameraInput: AVCaptureDeviceInput?
 
-    var movieOutput = AVCaptureMovieFileOutput()
+    var movieOutput = AVCaptureVideoDataOutput()
     var previewLayer = AVCaptureVideoPreviewLayer()
     
-    var photoCaptureCompletionBlock: ((Data?, Error?) -> Void)?
+    var videoCaptureCompletionBlock: ((String?, Error?) -> Void)?
 
+//    var didOutputNewImage: ((UIImage) -> Void)?
+    
 }
 
 
@@ -71,8 +73,7 @@ extension StreamController {
         func configureDeviceInputs() throws {
             
             guard let captureSession = self.captureSession else { throw CameraControllerError.captureSessionIsMissing }
-            
-            
+                    
             if let rearCamera = self.rearCamera {
                 self.rearCameraInput = try AVCaptureDeviceInput(device: rearCamera)
                 
@@ -95,17 +96,15 @@ extension StreamController {
         func configureVideoOutput() throws {
             guard let captureSession = self.captureSession else { throw CameraControllerError.captureSessionIsMissing }
             
-            let recordingDelegate:AVCaptureFileOutputRecordingDelegate? = self
-
+            self.movieOutput = AVCaptureVideoDataOutput()
+            self.movieOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "sample buffer"))
+            self.movieOutput.recommendedVideoSettings(forVideoCodecType: .jpeg, assetWriterOutputFileType: .mov)
+            
             if captureSession.canAddOutput(self.movieOutput) {
                 captureSession.addOutput(self.movieOutput)
             }
-            let filePath = NSURL(fileURLWithPath: "filePath")
             
-            movieOutput.startRecording(to: filePath as URL, recordingDelegate: recordingDelegate!)
-            #if DEBUG
-            print("RECORDING ..")
-            #endif
+            captureSession.startRunning()
         }
             DispatchQueue(label: "prepare").async {
                 do {
@@ -132,13 +131,6 @@ extension StreamController {
     func displayPreview(on view: UIView) throws {
         guard let captureSession = self.captureSession, captureSession.isRunning else { throw CameraControllerError.captureSessionIsMissing }
 
-//        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-//        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-//        previewLayer.connection!.videoOrientation = .portrait
-//        view.layer.addSublayer(previewLayer)
-//
-//        previewLayer.position = CGPoint(x: view.frame.width / 2, y: view.frame.height / 2)
-//        previewLayer.bounds = view.frame
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer.connection?.videoOrientation = .portrait
@@ -202,26 +194,51 @@ extension StreamController {
     }
     
     func stopRecording() {
-        movieOutput.stopRecording()
-        #if DEBUG
-        print("STOPPED ..")
-        #endif
+//        movieOutput.stop
+        self.captureSession?.stopRunning()
     }
     
+    func captureVideo(completion: @escaping (String?, Error?) -> Void) {
+       guard let captureSession = captureSession, captureSession.isRunning else { completion(nil, CameraControllerError.captureSessionIsMissing); return }
+        
+        self.videoCaptureCompletionBlock = completion
+    }
 }
 
-extension StreamController: AVCaptureFileOutputRecordingDelegate {
-    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-        if let error = error {
-            print("error occured : \(error.localizedDescription)")
-        } else {
-            //        TODO: Send video file from UDP
+extension StreamController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    
+     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return  }
+        let ciImage = CIImage(cvPixelBuffer: imageBuffer)
 
-                UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.path, nil, nil, nil)
-            #if DEBUG
-            print("SAVED ..")
-            #endif
-        }
-    }
+        let context = CIContext()
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return  }
+//        captureSession?
+//        self.videoCaptureCompletionBlock!(output.accessibilityPath?.cgPath as? String,nil)
+//        UISaveVideoAtPathToSavedPhotosAlbum(output.connection(with: .video), nil, nil, nil)
+//        let image = UIImage(cgImage: cgImage)
+
+        // the final picture is here, we call the completion block
+//        self.didOutputNewImage!(image)
+      }
+
+    
+
+//    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+//        if let error = error {
+//            print("error occured : \(error.localizedDescription)")
+//        }
+//        if !outputFileURL.dataRepresentation.isEmpty {
+//            //        TODO: Send video file from UDP
+//
+//            //                UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.path, nil, nil, nil)
+//            self.videoCaptureCompletionBlock!(outputFileURL, nil)
+//            #if DEBUG
+//            print("SAVED ..")
+//            #endif
+//        } else {
+//            self.videoCaptureCompletionBlock!(nil, CameraControllerError.unknown)
+//        }
+//    }
     
 }
