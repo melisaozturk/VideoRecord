@@ -17,23 +17,35 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ecg-v7-49J">
                                 <rect key="frame" x="34.5" y="144" width="345" height="537.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECORDING" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tP8-5W-odV">
+                                        <rect key="frame" x="0.0" y="0.0" width="345" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="tP8-5W-odV" secondAttribute="trailing" id="01z-za-oXs"/>
+                                    <constraint firstItem="tP8-5W-odV" firstAttribute="top" secondItem="Ecg-v7-49J" secondAttribute="top" id="DIX-dB-iE1"/>
+                                    <constraint firstItem="tP8-5W-odV" firstAttribute="leading" secondItem="Ecg-v7-49J" secondAttribute="leading" id="sMx-Pt-MBt"/>
+                                </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P8D-Q7-cPl">
                                 <rect key="frame" x="50" y="762" width="314" height="30"/>
                                 <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="CAPTURE">
+                                <state key="normal" title="RECORD">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
                                     <action selector="captureImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VB0-RF-6Up"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cAE-Gb-R0E">
-                                <rect key="frame" x="290" y="44" width="104" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cAE-Gb-R0E">
+                                <rect key="frame" x="275.5" y="64" width="104" height="30"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Switch Camera">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -42,17 +54,19 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKg-Nh-y7w">
-                                <rect key="frame" x="142.5" y="802" width="129" height="30"/>
+                                <rect key="frame" x="139.5" y="802" width="135" height="30"/>
                                 <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="STOP RECORDING"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="STOP RECORDING">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="btnStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fTo-uP-sHv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xck-pe-bS6">
-                                <rect key="frame" x="34" y="44" width="37" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xck-pe-bS6">
+                                <rect key="frame" x="34.5" y="64" width="37" height="30"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Flash">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -66,19 +80,25 @@
                             <constraint firstItem="Ecg-v7-49J" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1I2-4f-na9"/>
                             <constraint firstItem="P8D-Q7-cPl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="1d1-1q-06t"/>
                             <constraint firstItem="Ecg-v7-49J" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="5:6" id="4fD-ka-AnA"/>
+                            <constraint firstItem="xck-pe-bS6" firstAttribute="leading" secondItem="Ecg-v7-49J" secondAttribute="leading" id="68i-9p-rBB"/>
                             <constraint firstItem="hKg-Nh-y7w" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="87D-lq-1tl"/>
                             <constraint firstItem="Ecg-v7-49J" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="GKi-Ny-9mO"/>
                             <constraint firstItem="Ecg-v7-49J" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="6:10" id="OlB-bv-9qp"/>
+                            <constraint firstItem="xck-pe-bS6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="V7D-b2-649"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="P8D-Q7-cPl" secondAttribute="trailing" constant="50" id="Way-h1-kjY"/>
+                            <constraint firstItem="cAE-Gb-R0E" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="ZI2-DT-jhZ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="P8D-Q7-cPl" secondAttribute="bottom" constant="70" id="b50-hO-oIg"/>
                             <constraint firstItem="P8D-Q7-cPl" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="g3R-Jv-6RY"/>
                             <constraint firstItem="hKg-Nh-y7w" firstAttribute="top" secondItem="P8D-Q7-cPl" secondAttribute="bottom" constant="10" id="gIo-4J-afv"/>
+                            <constraint firstItem="cAE-Gb-R0E" firstAttribute="trailing" secondItem="Ecg-v7-49J" secondAttribute="trailing" id="szi-NQ-Bs5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="captureButton" destination="P8D-Q7-cPl" id="ArT-Zw-60O"/>
+                        <outlet property="btnRecord" destination="P8D-Q7-cPl" id="dG9-uw-9YV"/>
+                        <outlet property="btnStop" destination="hKg-Nh-y7w" id="hyd-XY-1cm"/>
                         <outlet property="capturePreviewView" destination="Ecg-v7-49J" id="ACi-mj-hvA"/>
+                        <outlet property="lblStatus" destination="tP8-5W-odV" id="KP5-GP-csv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

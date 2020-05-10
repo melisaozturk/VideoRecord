@@ -209,13 +209,10 @@ extension AssetWriterController {
         self.previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer!.connection?.videoOrientation = .portrait
         
-        //        view.layer.insertSublayer(self.previewLayer!, at: 0)
-        //                        self.previewLayer!.frame = view.frame
-        
         let rootLayer = view.layer
         rootLayer.masksToBounds = true
         rootLayer.insertSublayer(self.previewLayer!, at: 0)
-        self.previewLayer?.frame = CGRect(x: 0, y: 0, width: 1920, height: 1080)
+        self.previewLayer?.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
 
     }
     
